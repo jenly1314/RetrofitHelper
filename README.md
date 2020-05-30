@@ -86,7 +86,7 @@ val okHttpClient = RetrofitHelper.getInstance()
             .createClientBuilder()
             //...你自己的其他配置
             .build()
-方式二
+//方式二
 val okHttpClient = RetrofitHelper.getInstance()
             .with(builder)
             //...你自己的其他配置
