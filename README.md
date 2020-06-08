@@ -56,10 +56,11 @@ implementation 'com.king.retrofit:retrofit-helper:1.0.0'
 
 > 因为 **RetrofitHelper** 的依赖只在编译时有效，并未打入包中，所以您的项目中必须依赖上面列出相关库
 
-###### 如果Gradle出现compile失败的情况，可以在Project的build.gradle里面添加如下：（也可以使用上面的GitPack来complie）
+###### 如果Gradle出现compile失败的情况，可以在Project的build.gradle里面添加如下：（也可以使用上面的JitPack来compile）
 ```gradle
 allprojects {
     repositories {
+        //...
         maven { url 'https://dl.bintray.com/jenly/maven' }
     }
 }
