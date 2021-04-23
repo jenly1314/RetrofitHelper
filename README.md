@@ -26,28 +26,25 @@ RetrofitHelper for Android 是一个为 Retrofit 提供便捷配置多个BaseUrl
 
 ## 引入
 
-### Maven：
-```maven
-<dependency>
-  <groupId>com.king.retrofit</groupId>
-  <artifactId>retrofit-helper</artifactId>
-  <version>1.0.0</version>
-  <type>pom</type>
-</dependency>
+> 由于2021年2月3日 **JFrog宣布将关闭Bintray和JCenter，计划在2022年2月完全关闭。** 所以后续版本不再发布至 **JCenter**
+
+1. 在Project的 **build.gradle** 里面添加远程仓库  
+          
+```gradle
+allprojects {
+    repositories {
+        //...
+        maven { url 'https://jitpack.io' }
+    }
+}
 ```
-### Gradle:
+
+2. 在Module的 **build.gradle** 里面添加引入依赖项
 ```gradle
 //AndroidX 版本
-implementation 'com.king.retrofit:retrofit-helper:1.0.0'
+implementation 'com.github.jenly1314:RetrofitHelper:1.0.1'
 
 ```
-### Lvy:
-```lvy
-<dependency org='com.king.retrofit' name='retrofit-helper' rev='1.0.0'>
-  <artifact name='$AID' ext='pom'></artifact>
-</dependency>
-```
-
 
 ### RetrofitHelper引入的库（具体对应版本请查看 [Versions](versions.gradle)）
 ```gradle
@@ -56,16 +53,6 @@ implementation 'com.king.retrofit:retrofit-helper:1.0.0'
 ```
 
 > 因为 **RetrofitHelper** 的依赖只在编译时有效，并未打入包中，所以您的项目中必须依赖上面列出相关库
-
-###### 如果Gradle出现compile失败的情况，可以在Project的build.gradle里面添加如下：（也可以使用上面的JitPack来compile）
-```gradle
-allprojects {
-    repositories {
-        //...
-        maven { url 'https://dl.bintray.com/jenly/maven' }
-    }
-}
-```
 
 ## 示例
 
@@ -218,12 +205,12 @@ public final class RetrofitHelper{
         RetrofitHelper.getInstance().setBaseUrl(dynamicUrl)
 ```
 
-更多使用详情，请查看[Demo](app)中的源码使用示例或直接查看[API帮助文档](https://jenly1314.github.io/projects/RetrofitHelper/doc/)
+更多使用详情，请查看[Demo](app)中的源码使用示例或直接查看[API帮助文档](https://jitpack.io/com/github/jenly1314/RetrofitHelper/latest/javadoc/)
 
 
 ## 版本记录
 
-#### v1.0.1：2021-4-23 （待发布）
+#### v1.0.1：2021-4-23
 *  新增支持添加公共请求头
 *  新增 **@BaseUrl** 注解
 
