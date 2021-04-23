@@ -223,7 +223,7 @@ public final class RetrofitHelper{
 
 ## 版本记录
 
-#### v1.0.1：2021-4-23 （aar待发布）
+#### v1.0.1：2021-4-23 （待发布）
 *  新增支持添加公共请求头
 *  新增 **@BaseUrl** 注解
 
