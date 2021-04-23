@@ -18,6 +18,8 @@ object Constants {
 
     const val GOOGLE_BASE_URL = "https://google.com"
 
+    const val BAIDU_BASE_URL = "https://baidu.com"
+
     const val TAG = "RetrofitHelper"
 
     const val URL_REGEX = "^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]"

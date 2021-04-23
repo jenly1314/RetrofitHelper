@@ -1,7 +1,8 @@
 package com.king.retrofit.retrofithelper.interceptor;
 
 import com.king.retrofit.retrofithelper.RetrofitHelper;
-import com.king.retrofit.retrofithelper.DomainName;
+import com.king.retrofit.retrofithelper.annotation.DomainName;
+import com.king.retrofit.retrofithelper.annotation.BaseUrl;
 
 import java.io.IOException;
 
@@ -31,6 +32,19 @@ public class DomainInterceptor implements Interceptor {
         if(RetrofitHelper.getInstance().isDynamicDomain()){
             Invocation invocation = request.tag(Invocation.class);
             if(invocation != null){
+                BaseUrl baseUrl = invocation.method().getAnnotation(BaseUrl.class);
+                if(baseUrl != null){
+                    HttpUrl domainUrl = HttpUrl.parse(baseUrl.value());
+                    if(domainUrl != null){
+                        HttpUrl httpUrl = RetrofitHelper.getInstance().parseHttpUrl(domainUrl,request.url());
+                        //如果不为空，则切换 BaseUrl
+                        if(httpUrl != null){
+                            return request.newBuilder()
+                                    .url(httpUrl)
+                                    .build();
+                        }
+                    }
+                }
                 DomainName domainName = invocation.method().getAnnotation(DomainName.class);
                 if(domainName != null){
                     HttpUrl httpUrl = RetrofitHelper.getInstance().obtainParserDomainUrl(domainName.value(),request.url());

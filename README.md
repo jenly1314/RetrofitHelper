@@ -18,6 +18,7 @@ RetrofitHelper for Android 是一个为 Retrofit 提供便捷配置多个BaseUrl
 - [x] 支持配置多个BaseUrl
 - [x] 支持动态改变BaseUrl
 - [x] 支持动态配置超时时长
+- [x] 支持添加公共请求头
 
 ## Gif 展示
 ![Image](GIF.gif)
@@ -129,6 +130,15 @@ Step.3 定义接口时，通过注解标记对应接口，支持动态改变 Bas
      @GET("api/user")
      fun getUser(): Call<User>
 
+     /**
+      * 动态改变 BaseUrl
+      * @return
+      */
+     @BaseUrl(baseUrl) //baseUrl 标识，用于支持指定 BaseUrl
+     @GET("api/user")
+     fun getUser(): Call<User>
+
+
      //--------------------------------------
 
      /**
@@ -158,6 +168,51 @@ Step.4 添加多个 BaseUrl 支持
             putDomain(Constants.DOMAIN_GOOGLE,Constants.GOOGLE_BASE_URL)
         }
 ```
+
+RetrofitHelper
+```java
+/**
+ * Retrofit帮助类
+ * <p>
+ * 主要功能介绍：
+ *      1.支持管理多个 BaseUrl，且支持运行时动态改变
+ *      2.支持接口自定义超时时长，满足每个接口动态定义超时时长
+ *      3.支持添加公共请求头
+ * <p>
+ *
+ * RetrofitHelper中的核心方法
+ *
+ * {@link #createClientBuilder()} 创建 {@link OkHttpClient.Builder}初始化一些配置参数，用于支持多个 BaseUrl
+ *
+ * {@link #with(OkHttpClient.Builder)} 传入 {@link OkHttpClient.Builder} 配置一些参数，用于支持多个 BaseUrl
+ *
+ * {@link #setBaseUrl(String)} 和 {@link #setBaseUrl(HttpUrl)} 主要用于设置默认的 BaseUrl。
+ *
+ * {@link #putDomain(String, String)} 和 {@link #putDomain(String, HttpUrl)} 主要用于支持多个 BaseUrl，且支持 BaseUrl 动态改变。
+ *
+ * {@link #setDynamicDomain(boolean)} 设置是否支持 配置多个BaseUrl，且支持动态改变，一般会通过其他途径自动开启，此方法一般不会主动用到，只有在特殊场景下可能会有此需求，所以提供此方法主要用于提供更多种可能。
+ *
+ * {@link #setHttpUrlParser(HttpUrlParser)} 设置 HttpUrl解析器 , 当前默认采用的 {@link DomainParser} 实现类，你也可以自定义实现 {@link HttpUrlParser}
+ *
+ * {@link #setAddHeader(boolean)} 设置是否添加头，一般会通过{@link #addHeader(String, String)}相关方法自动开启，此方法一般不会主动用到，只有特殊场景下会有此需求，主要用于提供统一控制。
+ *
+ * {@link #addHeader(String, String)} 设置头，主要用于添加公共头消息。
+ *
+ * {@link #addHeaders(Map)} 设置头，主要用于设置公共头消息。
+ *
+ * 这里只是列出一些对外使用的核心方法，和相关的简单说明。如果想了解更多，可以查看对应的方法和详情。
+ *
+ * <p>
+ *
+ * @author <a href="mailto:jenly1314@gmail.com">Jenly</a>
+ */
+public final class RetrofitHelper{
+    //...
+}
+
+```
+
+特别说明
 ```kotlin
         //通过setBaseUrl可以动态改变全局的 BaseUrl，优先级比putDomain(domainName,domainUrl)低，谨慎使用
         RetrofitHelper.getInstance().setBaseUrl(dynamicUrl)
@@ -167,6 +222,10 @@ Step.4 添加多个 BaseUrl 支持
 
 
 ## 版本记录
+
+#### v1.0.1：2021-4-23 （aar待发布）
+*  新增支持添加公共请求头
+*  新增 **@BaseUrl** 注解
 
 #### v1.0.0：2020-5-30
 *  RetrofitHelper初始版本

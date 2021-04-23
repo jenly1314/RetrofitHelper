@@ -36,5 +36,7 @@ object Repository {
 
     fun getRequest4() = mApiService.getRequest4()
 
+    fun getRequest5() = mApiService.getRequest5()
+
 
 }

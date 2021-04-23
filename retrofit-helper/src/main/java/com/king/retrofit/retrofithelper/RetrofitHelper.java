@@ -2,7 +2,9 @@ package com.king.retrofit.retrofithelper;
 
 import androidx.annotation.NonNull;
 
+import com.king.retrofit.retrofithelper.annotation.DomainName;
 import com.king.retrofit.retrofithelper.interceptor.DomainInterceptor;
+import com.king.retrofit.retrofithelper.interceptor.HeaderInterceptor;
 import com.king.retrofit.retrofithelper.interceptor.TimeoutInterceptor;
 import com.king.retrofit.retrofithelper.parser.DomainParser;
 import com.king.retrofit.retrofithelper.parser.HttpUrlParser;
@@ -21,7 +23,7 @@ import okhttp3.Request;
  * 主要功能介绍：
  *      1.支持管理多个 BaseUrl，且支持运行时动态改变
  *      2.支持接口自定义超时时长，满足每个接口动态定义超时时长
- *
+ *      3.支持添加公共请求头
  * <p>
  *
  * RetrofitHelper中的核心方法
@@ -37,6 +39,12 @@ import okhttp3.Request;
  * {@link #setDynamicDomain(boolean)} 设置是否支持 配置多个BaseUrl，且支持动态改变，一般会通过其他途径自动开启，此方法一般不会主动用到，只有在特殊场景下可能会有此需求，所以提供此方法主要用于提供更多种可能。
  *
  * {@link #setHttpUrlParser(HttpUrlParser)} 设置 HttpUrl解析器 , 当前默认采用的 {@link DomainParser} 实现类，你也可以自定义实现 {@link HttpUrlParser}
+ *
+ * {@link #setAddHeader(boolean)} 设置是否添加头，一般会通过{@link #addHeader(String, String)}相关方法自动开启，此方法一般不会主动用到，只有特殊场景下会有此需求，主要用于提供统一控制。
+ *
+ * {@link #addHeader(String, String)} 设置头，主要用于添加公共头消息。
+ *
+ * {@link #addHeaders(Map)} 设置头，主要用于设置公共头消息。
  *
  * 这里只是列出一些对外使用的核心方法，和相关的简单说明。如果想了解更多，可以查看对应的方法和详情。
  *
@@ -58,6 +66,8 @@ public final class RetrofitHelper implements HttpUrlParser {
      * 是否是否支持 配置多个BaseUrl，且支持动态改变
      */
     private boolean isDynamicDomain;
+
+    private boolean isSetDynamicDomain;
     /**
      * 是否支持 配置动态超时时长
      */
@@ -66,6 +76,15 @@ public final class RetrofitHelper implements HttpUrlParser {
      * Url 解析器
      */
     private HttpUrlParser mHttpUrlParser;
+
+    /**
+     * 是否添加头
+     */
+    private boolean isAddHeader;
+
+    private boolean isSetAddHeader;
+
+    private Map<String,String> mHeaders;
 
     public static RetrofitHelper getInstance(){
         return DomainHolder.INSTANCE;
@@ -78,8 +97,10 @@ public final class RetrofitHelper implements HttpUrlParser {
     private RetrofitHelper(){
         mUrlMap = new HashMap<>();
         mHttpUrlParser = new DomainParser();
+        mHeaders = new HashMap<>();
         isDynamicDomain = false;
         isDynamicTimeout = true;
+        isAddHeader = false;
     }
 
     /**
@@ -99,7 +120,8 @@ public final class RetrofitHelper implements HttpUrlParser {
      */
     public OkHttpClient.Builder with(@NonNull OkHttpClient.Builder builder){
          return builder.addInterceptor(new DomainInterceptor())
-                .addInterceptor(new TimeoutInterceptor());
+                 .addInterceptor(new TimeoutInterceptor())
+                 .addInterceptor(new HeaderInterceptor());
     }
 
     /**
@@ -155,7 +177,10 @@ public final class RetrofitHelper implements HttpUrlParser {
      */
     public void putDomain(@NonNull String domainName,@NonNull HttpUrl domainUrl){
         mUrlMap.put(domainName,domainUrl);
-        isDynamicDomain = true;
+        if(!isSetDynamicDomain){
+            isDynamicDomain = true;
+        }
+
     }
 
     /**
@@ -191,6 +216,7 @@ public final class RetrofitHelper implements HttpUrlParser {
      */
     public void setDynamicDomain(boolean dynamicDomain) {
         isDynamicDomain = dynamicDomain;
+        isSetDynamicDomain = true;
     }
 
     /**
@@ -214,7 +240,6 @@ public final class RetrofitHelper implements HttpUrlParser {
      */
     public void clearDomain(){
         mUrlMap.clear();
-        isDynamicDomain = false;
     }
 
     /**
@@ -254,4 +279,73 @@ public final class RetrofitHelper implements HttpUrlParser {
         this.mHttpUrlParser = httpUrlParser;
     }
 
+    /**
+     * 是否添加头
+     * @return
+     */
+    public boolean isAddHeader() {
+        return isAddHeader;
+    }
+
+    /**
+     * 设置是否添加头，一般会通过{@link #addHeader(String, String)}相关方法自动开启，此方法一般不会主动用到，只有特殊场景下会有此需求，提供统一控制。
+     * @param addHeader
+     */
+    public void setAddHeader(boolean addHeader) {
+        isAddHeader = addHeader;
+        isSetAddHeader = true;
+    }
+
+    /**
+     * 获取头，只能获取通过{@link #RetrofitHelper()}添加的头
+     * @return
+     */
+    @NonNull
+    public Map<String,String> getHeaders(){
+        return mHeaders;
+    }
+
+    /**
+     * 设置头，主要用于设置公共头消息。
+     * @param headers
+     */
+    public void setHeaders(@NonNull Map<String,String> headers){
+        this.mHeaders = headers;
+        if(!isSetAddHeader){
+            isAddHeader = true;
+        }
+
+    }
+
+    /**
+     * 添加头，主要用于添加公共头消息。
+     * @param name
+     * @param value
+     */
+    public void addHeader(String name,String value){
+        mHeaders.put(name,value);
+        if(!isSetAddHeader){
+            isAddHeader = true;
+        }
+    }
+
+    /**
+     * 添加头，主要用于添加公共头消息。
+     * @param headers
+     */
+    public void addHeaders(Map<String,String> headers){
+        if(headers != null){
+            mHeaders.putAll(headers);
+            if(!isSetAddHeader){
+                isAddHeader = true;
+            }
+        }
+    }
+
+    /**
+     * 清空头
+     */
+    public void clearHeaders(){
+        mHeaders.clear();
+    }
 }

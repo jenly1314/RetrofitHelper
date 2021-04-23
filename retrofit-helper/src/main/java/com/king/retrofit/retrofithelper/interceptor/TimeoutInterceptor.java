@@ -2,7 +2,7 @@ package com.king.retrofit.retrofithelper.interceptor;
 
 
 import com.king.retrofit.retrofithelper.RetrofitHelper;
-import com.king.retrofit.retrofithelper.Timeout;
+import com.king.retrofit.retrofithelper.annotation.Timeout;
 
 import java.io.IOException;
 

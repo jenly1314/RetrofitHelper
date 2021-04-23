@@ -7,7 +7,6 @@ import android.text.method.ScrollingMovementMethod
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.king.retrofit.retrofithelper.DomainName
 import com.king.retrofit.retrofithelper.RetrofitHelper
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -34,7 +33,8 @@ class MainActivity : AppCompatActivity() {
 
         tvResponse.movementMethod = ScrollingMovementMethod.getInstance()
 
-        etUrl.setText("https://baidu.com")
+        etUrl.setText(Constants.BAIDU_BASE_URL)
+        etUrl.setSelection(etUrl.length())
     }
 
     private fun loading(isLoading: Boolean){
@@ -49,19 +49,15 @@ class MainActivity : AppCompatActivity() {
     fun onClick(v: View){
         when(v.id){
             //原始BaseUrl请求
-            R.id.btn1 -> {
-                viewModel.getRequest1()
-            }
+            R.id.btn1 -> viewModel.getRequest1()
             //切换到GitHub Url
-            R.id.btn2 -> {
-                viewModel.getRequest2()
-            }
+            R.id.btn2 -> viewModel.getRequest2()
             //切换到Google Url
-            R.id.btn3 -> {
-                viewModel.getRequest3()
-            }
+            R.id.btn3 -> viewModel.getRequest3()
+            //切换到BaiDu Url
+            R.id.btn4 -> viewModel.getRequest4()
             //动态设置BaseUrl
-            R.id.btn4 -> {
+            R.id.btn5 -> {
 
                 if(TextUtils.isEmpty(etUrl.text)){
                     return
@@ -71,7 +67,7 @@ class MainActivity : AppCompatActivity() {
                 RetrofitHelper.getInstance().putDomain(Constants.DOMAIN_DYNAMIC,dynamicUrl)
                 //通过setBaseUrl可以动态改变全局的 BaseUrl，优先级比domainName低，谨慎使用
 //                RetrofitHelper.getInstance().setBaseUrl(dynamicUrl)
-                viewModel.getRequest4()
+                viewModel.getRequest5()
             }
         }
     }

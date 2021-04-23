@@ -18,6 +18,8 @@ class App : Application() {
             putDomain(Constants.DOMAIN_GITHUB,Constants.GITHUB_BASE_URL)
             //Google baseUrl
             putDomain(Constants.DOMAIN_GOOGLE,Constants.GOOGLE_BASE_URL)
+            //Add header
+//            addHeader("seq",System.currentTimeMillis().toString())
         }
     }
 

@@ -1,13 +1,11 @@
 package com.king.retrofit.retrofithelper.app.api
 
-import com.king.retrofit.retrofithelper.DomainName
-import com.king.retrofit.retrofithelper.Timeout
+import com.king.retrofit.retrofithelper.annotation.BaseUrl
+import com.king.retrofit.retrofithelper.annotation.DomainName
+import com.king.retrofit.retrofithelper.annotation.Timeout
 import com.king.retrofit.retrofithelper.app.Constants
-import kotlinx.coroutines.Deferred
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.GET
-import java.util.concurrent.TimeUnit
 
 /**
  * @author <a href="mailto:jenly1314@gmail.com">Jenly</a>
@@ -43,8 +41,17 @@ interface ApiService {
      * 动态改变 BaseUrl
      * @return
      */
-    @DomainName(Constants.DOMAIN_DYNAMIC) //域名别名标识，用于支持切换对应的 BaseUrl
+    @BaseUrl(Constants.BAIDU_BASE_URL) //BaseUrl标识，用于支持指定 BaseUrl
     @GET("index.html")
     fun getRequest4(): Call<String>
+
+
+    /**
+     * 动态改变 BaseUrl
+     * @return
+     */
+    @DomainName(Constants.DOMAIN_DYNAMIC) //域名别名标识，用于支持切换对应的 BaseUrl
+    @GET("index.html")
+    fun getRequest5(): Call<String>
 
 }

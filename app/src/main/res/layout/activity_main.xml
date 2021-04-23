@@ -5,13 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:layout_margin="30dp">
+    android:layout_marginLeft="30dp"
+    android:layout_marginRight="30dp">
 
     <Button
         android:id="@+id/btn1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="6dp"
         android:text="原始BaseUrl请求"
         app:layout_constraintTop_toTopOf="parent"
         style="@style/OnClick"/>
@@ -19,7 +20,7 @@
         android:id="@+id/btn2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="6dp"
         android:text="切换成GitHub Url"
         app:layout_constraintTop_toBottomOf="@+id/btn1"
         style="@style/OnClick"/>
@@ -27,9 +28,17 @@
         android:id="@+id/btn3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="6dp"
         android:text="切换成Google Url"
         app:layout_constraintTop_toBottomOf="@+id/btn2"
+        style="@style/OnClick"/>
+    <Button
+        android:id="@+id/btn4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:text="切换成BaiDu url"
+        app:layout_constraintTop_toBottomOf="@+id/btn3"
         style="@style/OnClick"/>
 
     <EditText
@@ -37,15 +46,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:padding="10dp"
+        android:padding="6dp"
         android:hint="请输入自定义BaseUrl"
         android:singleLine="true"
-        app:layout_constraintTop_toBottomOf="@+id/btn3" />
+        app:layout_constraintTop_toBottomOf="@+id/btn4" />
     <Button
-        android:id="@+id/btn4"
+        android:id="@+id/btn5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="6dp"
         android:text="动态设置BaseUrl"
         app:layout_constraintTop_toBottomOf="@+id/etUrl"
         style="@style/OnClick"/>
@@ -56,11 +65,11 @@
         android:scrollbars="vertical"
         android:scrollbarStyle="outsideInset"
         android:minHeight="80dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="20dp"
-        android:padding="10dp"
+        android:padding="6dp"
         android:hint="响应内容…"
-        app:layout_constraintTop_toBottomOf="@+id/btn4"
+        app:layout_constraintTop_toBottomOf="@+id/btn5"
         app:layout_constraintBottom_toBottomOf="parent"
         android:background="@color/response_bg"/>
 

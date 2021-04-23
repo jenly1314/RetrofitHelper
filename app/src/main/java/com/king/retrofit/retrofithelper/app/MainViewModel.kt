@@ -45,6 +45,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun getRequest5(){
+        launch{
+            val response  = Repository.getRequest5().await()
+            liveData.value = response
+        }
+    }
+
+
 
     private fun launch(block: suspend () -> Unit){
         launch(block,{
