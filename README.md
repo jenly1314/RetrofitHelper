@@ -4,6 +4,7 @@
 
 [![Download](https://img.shields.io/badge/download-App-blue.svg)](https://raw.githubusercontent.com/jenly1314/RetrofitHelper/master/app/release/app-release.apk)
 [![JCenter](https://img.shields.io/badge/JCenter-1.0.0-46C018.svg)](https://bintray.com/beta/#/jenly/maven/retrofit-helper)
+[![MavenCentral](https://img.shields.io/maven-central/v/com.github.jenly1314/retrofit-helper)](https://repo1.maven.org/maven2/com/github/jenly1314/retrofit-helper)
 [![JitPack](https://jitpack.io/v/jenly1314/RetrofitHelper.svg)](https://jitpack.io/#jenly1314/RetrofitHelper)
 [![CI](https://travis-ci.org/jenly1314/RetrofitHelper.svg?branch=master)](https://travis-ci.org/jenly1314/RetrofitHelper)
 [![CircleCI](https://circleci.com/gh/jenly1314/RetrofitHelper.svg?style=svg)](https://circleci.com/gh/jenly1314/RetrofitHelper)
@@ -34,7 +35,7 @@ RetrofitHelper for Android 是一个为 Retrofit 提供便捷配置多个BaseUrl
 allprojects {
     repositories {
         //...
-        maven { url 'https://jitpack.io' }
+        mavenCentral()
     }
 }
 ```
@@ -42,7 +43,7 @@ allprojects {
 2. 在Module的 **build.gradle** 里面添加引入依赖项
 ```gradle
 //AndroidX 版本
-implementation 'com.github.jenly1314:RetrofitHelper:1.0.1'
+implementation 'com.github.jenly1314:retrofit-helper:1.0.1'
 
 ```
 
