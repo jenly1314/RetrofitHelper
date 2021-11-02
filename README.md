@@ -72,13 +72,13 @@ Step.2 通过RetrofitUrlManager初始化OkHttpClient，进行初始化配置
 ```kotlin
 //通过RetrofitHelper创建一个支持多个BaseUrl的 OkHttpClient
 //方式一
-val okHttpClient = RetrofitHelper.getInstance()
+val clientBuilder = RetrofitHelper.getInstance()
             .createClientBuilder()
             //...你自己的其他配置
-            .build()
+            
 //方式二
 val okHttpClient = RetrofitHelper.getInstance()
-            .with(builder)
+            .with(clientBuilder)
             //...你自己的其他配置
             .build()
 
