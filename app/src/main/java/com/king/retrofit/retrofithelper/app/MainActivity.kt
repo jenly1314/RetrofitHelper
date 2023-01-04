@@ -51,7 +51,9 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onException(e: Exception) {
-                Log.e(Constants.TAG, e.message)
+                e.message?.let {
+                    Log.e(Constants.TAG, it)
+                }
             }
         })
 
@@ -62,7 +64,9 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onException(e: Exception) {
-                Log.e(Constants.TAG, e.message)
+                e.message?.let {
+                    Log.e(Constants.TAG, it)
+                }
             }
         })
 
@@ -85,7 +89,9 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onException(e: Exception) {
-                Log.e(Constants.TAG, e.message)
+                e.message?.let {
+                    Log.e(Constants.TAG, it)
+                }
                 isDownload = false
                 binding.tvResponse.text = e.message
             }
