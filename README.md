@@ -218,8 +218,6 @@ RetrofitHelper
  * 
  * 这里只是列出一些对外使用的核心方法，和相关的简单说明。如果想了解更多，可以查看对应的方法和详情。
  *
- * <p>
- *
  * @author <a href="mailto:jenly1314@gmail.com">Jenly</a>
  */
 public final class RetrofitHelper{

@@ -58,6 +58,21 @@
         android:text="动态设置BaseUrl"
         app:layout_constraintTop_toBottomOf="@+id/etUrl"
         style="@style/OnClick"/>
+    <Button
+        android:id="@+id/btn6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:text="下载"
+        app:layout_constraintTop_toBottomOf="@+id/btn5"
+        style="@style/OnClick"/>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="100"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/btn6"/>
     <TextView
         android:id="@+id/tvResponse"
         android:layout_width="match_parent"
@@ -69,7 +84,7 @@
         android:layout_marginBottom="20dp"
         android:padding="6dp"
         android:hint="响应内容…"
-        app:layout_constraintTop_toBottomOf="@+id/btn5"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar"
         app:layout_constraintBottom_toBottomOf="parent"
         android:background="@color/response_bg"/>
 
