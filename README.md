@@ -3,7 +3,6 @@
 ![Image](app/src/main/ic_launcher-playstore.png)
 
 [![Download](https://img.shields.io/badge/download-App-blue.svg)](https://raw.githubusercontent.com/jenly1314/RetrofitHelper/master/app/release/app-release.apk)
-[![JCenter](https://img.shields.io/badge/JCenter-1.0.0-46C018.svg)](https://bintray.com/beta/#/jenly/maven/retrofit-helper)
 [![MavenCentral](https://img.shields.io/maven-central/v/com.github.jenly1314/retrofit-helper)](https://repo1.maven.org/maven2/com/github/jenly1314/retrofit-helper)
 [![JitPack](https://jitpack.io/v/jenly1314/RetrofitHelper.svg)](https://jitpack.io/#jenly1314/RetrofitHelper)
 [![CI](https://travis-ci.org/jenly1314/RetrofitHelper.svg?branch=master)](https://travis-ci.org/jenly1314/RetrofitHelper)
@@ -20,14 +19,13 @@ RetrofitHelper for Android 是一个为 Retrofit 提供便捷配置多个BaseUrl
 - [x] 支持动态改变BaseUrl
 - [x] 支持动态配置超时时长
 - [x] 支持添加公共请求头
+- [x] 支持请求响应进度监听
 
 ## Gif 展示
 ![Image](GIF.gif)
 
 
 ## 引入
-
-> 由于2021年2月3日 **JFrog宣布将关闭Bintray和JCenter，计划在2022年2月完全关闭。** 所以后续版本不再发布至 **JCenter**
 
 1. 在Project的 **build.gradle** 里面添加远程仓库  
           
@@ -42,18 +40,12 @@ allprojects {
 
 2. 在Module的 **build.gradle** 里面添加引入依赖项
 ```gradle
-//AndroidX 版本
-implementation 'com.github.jenly1314:retrofit-helper:1.0.1'
+// AndroidX 版本
+implementation 'com.github.jenly1314:retrofit-helper:1.1.0'
 
 ```
 
-### RetrofitHelper引入的库（具体对应版本请查看 [Versions](versions.gradle)）
-```gradle
-    compileOnly "androidx.appcompat:appcompat:$versions.appcompat"
-    compileOnly "com.squareup.retrofit2:retrofit:$versions.retrofit"
-```
-
-> 因为 **RetrofitHelper** 的依赖只在编译时有效，并未打入包中，所以您的项目中必须依赖上面列出相关库
+> 因为 **RetrofitHelper** 依赖的 **retrofit** 只在编译时有效，所以在使用时，您的项目还需依赖 **retrofit** 才能正常使用。
 
 ## 示例
 
@@ -70,13 +62,13 @@ compileOptions {
 
 Step.2 通过RetrofitUrlManager初始化OkHttpClient，进行初始化配置
 ```kotlin
-//通过RetrofitHelper创建一个支持多个BaseUrl的 OkHttpClient
-//方式一
+// 通过RetrofitHelper创建一个支持多个BaseUrl的 OkHttpClient
+// 方式一
 val clientBuilder = RetrofitHelper.getInstance()
             .createClientBuilder()
             //...你自己的其他配置
             
-//方式二
+// 方式二
 val okHttpClient = RetrofitHelper.getInstance()
             .with(clientBuilder)
             //...你自己的其他配置
@@ -85,7 +77,7 @@ val okHttpClient = RetrofitHelper.getInstance()
 ```
 
 ```kotlin
-//完整示例
+// 完整示例
 val okHttpClient = RetrofitHelper.getInstance()
             .createClientBuilder()
             .addInterceptor(LogInterceptor())
@@ -107,8 +99,7 @@ Step.3 定义接口时，通过注解标记对应接口，支持动态改变 Bas
       */
      @GET("api/user")
      fun getUser(): Call<User>
-
-
+     
      /**
       * Retrofit默认返回接口定义示例，添加 DomainName 标示 和 Timeout 标示
       * @return
@@ -122,33 +113,39 @@ Step.3 定义接口时，通过注解标记对应接口，支持动态改变 Bas
       * 动态改变 BaseUrl
       * @return
       */
-     @BaseUrl(baseUrl) //baseUrl 标识，用于支持指定 BaseUrl
+     @BaseUrl(baseUrl) // baseUrl 标识，用于支持指定 BaseUrl
      @GET("api/user")
      fun getUser(): Call<User>
-
-
+     
      //--------------------------------------
 
      /**
-      * 使用RxJava返回接口定义示例，添加 DomainName 标示 和 Timeout 标示
+      * 使用 RxJava 返回接口定义示例，添加 DomainName 标示 和 Timeout 标示
       * @return
       */
      @DomainName(domainName) // domainName 域名别名标识，用于支持切换对应的 BaseUrl
-     @Timeout(connectTimeout = 20,readTimeout = 10) //超时标识，用于自定义超时时长
+     @Timeout(connectTimeout = 20,readTimeout = 10) // 超时标识，用于自定义超时时长
      @GET("api/user")
      fun getUser(): Observable<User>
 
+    /**
+     * 下载；可通过 RetrofitHelper.getInstance().addResponseListener(key, listener) 监听下载进度
+     */
+    @ResponseProgress(key) // 支持响应进度监听，自定义配置监听的key
+    @Streaming
+    @GET("api/download")
+    fun download(): Call<ResponseBody>
  }
 
 ```
 
 Step.4 添加多个 BaseUrl 支持
 ```kotlin
-        //添加多个 BaseUrl 支持 ，domainName为域名别名标识，domainUrl为域名对应的 BaseUrl，与上面的接口定义表示一致即可生效
+        // 添加多个 BaseUrl 支持 ，domainName为域名别名标识，domainUrl为域名对应的 BaseUrl，与上面的接口定义表示一致即可生效
         RetrofitHelper.getInstance().putDomain(domainName,domainUrl)
 ```
 ```kotlin
-        //添加多个 BaseUrl 支持 示例
+        // 添加多个 BaseUrl 支持 示例
         RetrofitHelper.getInstance().apply {
             //GitHub baseUrl
             putDomain(Constants.DOMAIN_GITHUB,Constants.GITHUB_BASE_URL)
@@ -157,16 +154,43 @@ Step.4 添加多个 BaseUrl 支持
         }
 ```
 
+Step.5 添加进度监听
+
+```kotlin
+        // 添加请求进度监听：key默认为请求的url，也可以通过 {@link RequestProgress} 来自定义配置接口对应的key；自定义配置的key优先级高于默认的url
+        RetrofitHelper.getInstance().addRequestListener(key, object: ProgressListener{
+            override fun onProgress(currentBytes: Long, contentLength: Long, completed: Boolean) {
+                
+            }
+
+            override fun onException(e: Exception) {
+                
+            }
+        })
+```
+
+```kotlin
+        // 添加响应进度监听：key默认为请求的url，也可以通过 {@link ResponseProgress} 来自定义配置接口对应的key；自定义配置的key优先级高于默认的url
+        RetrofitHelper.getInstance().addResponseListener(key, object: ProgressListener{
+            override fun onProgress(currentBytes: Long, contentLength: Long, completed: Boolean) {
+                
+            }
+
+            override fun onException(e: Exception) {
+                
+            }
+        })
+```
+
 RetrofitHelper
 ```java
 /**
  * Retrofit帮助类
- * <p>
+ * 
  * 主要功能介绍：
  *      1.支持管理多个 BaseUrl，且支持运行时动态改变
  *      2.支持接口自定义超时时长，满足每个接口动态定义超时时长
  *      3.支持添加公共请求头
- * <p>
  *
  * RetrofitHelper中的核心方法
  *
@@ -187,7 +211,11 @@ RetrofitHelper
  * {@link #addHeader(String, String)} 设置头，主要用于添加公共头消息。
  *
  * {@link #addHeaders(Map)} 设置头，主要用于设置公共头消息。
- *
+ * 
+ * {@link #addRequestListener(String, ProgressListener)} 添加请求监听。
+ * 
+ * {@link #addResponseListener(String, ProgressListener)} 添加响应监听。
+ * 
  * 这里只是列出一些对外使用的核心方法，和相关的简单说明。如果想了解更多，可以查看对应的方法和详情。
  *
  * <p>
@@ -211,6 +239,9 @@ public final class RetrofitHelper{
 
 ## 版本记录
 
+#### v1.1.0：2023-1-4
+*  新增支持请求响应进度监听
+
 #### v1.0.1：2021-4-23
 *  新增支持添加公共请求头
 *  新增 **@BaseUrl** 注解
@@ -221,31 +252,27 @@ public final class RetrofitHelper{
 ## 赞赏
 如果你喜欢RetrofitHelper，或感觉RetrofitHelper帮助到了你，可以点右上角“Star”支持一下，你的支持就是我的动力，谢谢 :smiley:<p>
 你也可以扫描下面的二维码，请作者喝杯咖啡 :coffee:
-    <div>
-        <img src="https://jenly1314.github.io/image/pay/wxpay.png" width="280" heght="350">
-        <img src="https://jenly1314.github.io/image/pay/alipay.png" width="280" heght="350">
-        <img src="https://jenly1314.github.io/image/pay/qqpay.png" width="280" heght="350">
-        <img src="https://jenly1314.github.io/image/alipay_red_envelopes.jpg" width="233" heght="350">
-    </div>
+<div>
+<img src="https://jenly1314.github.io/image/pay/sponsor.png" width="98%">
+</div>
 
 ## 关于我
-   Name: <a title="关于作者" href="https://about.me/jenly1314" target="_blank">Jenly</a>
+Name: <a title="关于作者" href="https://jenly1314.github.io" target="_blank">Jenly</a>
 
-   Email: <a title="欢迎邮件与我交流" href="mailto:jenly1314@gmail.com" target="_blank">jenly1314#gmail.com</a> / <a title="给我发邮件" href="mailto:jenly1314@vip.qq.com" target="_blank">jenly1314#vip.qq.com</a>
+Email: <a title="欢迎邮件与我交流" href="mailto:jenly1314@gmail.com" target="_blank">jenly1314#gmail.com</a> / <a title="给我发邮件" href="mailto:jenly1314@vip.qq.com" target="_blank">jenly1314#vip.qq.com</a>
 
-   CSDN: <a title="CSDN博客" href="http://blog.csdn.net/jenly121" target="_blank">jenly121</a>
+CSDN: <a title="CSDN博客" href="http://blog.csdn.net/jenly121" target="_blank">jenly121</a>
 
-   CNBlogs: <a title="博客园" href="https://www.cnblogs.com/jenly" target="_blank">jenly</a>
+CNBlogs: <a title="博客园" href="https://www.cnblogs.com/jenly" target="_blank">jenly</a>
 
-   GitHub: <a title="GitHub开源项目" href="https://github.com/jenly1314" target="_blank">jenly1314</a>
-   
-   Gitee: <a title="Gitee开源项目" href="https://gitee.com/jenly1314" target="_blank">jenly1314</a>
+GitHub: <a title="GitHub开源项目" href="https://github.com/jenly1314" target="_blank">jenly1314</a>
 
-   加入QQ群: <a title="点击加入QQ群" href="http://shang.qq.com/wpa/qunwpa?idkey=8fcc6a2f88552ea44b1411582c94fd124f7bb3ec227e2a400dbbfaad3dc2f5ad" target="_blank">20867961</a>
+Gitee: <a title="Gitee开源项目" href="https://gitee.com/jenly1314" target="_blank">jenly1314</a>
+
+加入QQ群: <a title="点击加入QQ群" href="http://shang.qq.com/wpa/qunwpa?idkey=8fcc6a2f88552ea44b1411582c94fd124f7bb3ec227e2a400dbbfaad3dc2f5ad" target="_blank">20867961</a>
    <div>
        <img src="https://jenly1314.github.io/image/jenly666.png">
        <img src="https://jenly1314.github.io/image/qqgourp.png">
    </div>
-
 
    

@@ -20,6 +20,11 @@ object Constants {
 
     const val BAIDU_BASE_URL = "https://baidu.com"
 
+    const val DOWNLOAD_URL = "https://repo1.maven.org/maven2/com/github/jenly1314/retrofit-helper/1.1.0/retrofit-helper-1.1.0-javadoc.jar"
+
+    const val RESPONSE_PROGRESS_1 = "response_progress_1"
+    const val RESPONSE_PROGRESS_2 = "response_progress_2"
+
     const val TAG = "RetrofitHelper"
 
     const val URL_REGEX = "^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]"

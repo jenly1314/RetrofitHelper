@@ -38,5 +38,7 @@ object Repository {
 
     fun getRequest5() = mApiService.getRequest5()
 
+    fun download() = mApiService.download(Constants.DOWNLOAD_URL)
+
 
 }

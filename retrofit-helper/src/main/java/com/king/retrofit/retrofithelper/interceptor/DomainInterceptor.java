@@ -13,6 +13,8 @@ import okhttp3.Response;
 import retrofit2.Invocation;
 
 /**
+ * 域名拦截器 - 支持动态配置 BaseUrl
+ *
  * @author <a href="mailto:jenly1314@gmail.com">Jenly</a>
  */
 public class DomainInterceptor implements Interceptor {
@@ -24,21 +26,22 @@ public class DomainInterceptor implements Interceptor {
 
     /**
      * 处理请求，切换 BaseUrl
+     *
      * @param request
      * @return
      */
-    private Request processRequest(Request request){
-        //如果支持动态配置 BaseUrl
-        if(RetrofitHelper.getInstance().isDynamicDomain()){
+    private Request processRequest(Request request) {
+        // 如果支持动态配置 BaseUrl
+        if (RetrofitHelper.getInstance().isDynamicDomain()) {
             Invocation invocation = request.tag(Invocation.class);
-            if(invocation != null){
+            if (invocation != null) {
                 BaseUrl baseUrl = invocation.method().getAnnotation(BaseUrl.class);
-                if(baseUrl != null){
+                if (baseUrl != null) {
                     HttpUrl domainUrl = HttpUrl.parse(baseUrl.value());
-                    if(domainUrl != null){
-                        HttpUrl httpUrl = RetrofitHelper.getInstance().parseHttpUrl(domainUrl,request.url());
-                        //如果不为空，则切换 BaseUrl
-                        if(httpUrl != null){
+                    if (domainUrl != null) {
+                        HttpUrl httpUrl = RetrofitHelper.getInstance().parseHttpUrl(domainUrl, request.url());
+                        // 如果不为空，则切换 BaseUrl
+                        if (httpUrl != null) {
                             return request.newBuilder()
                                     .url(httpUrl)
                                     .build();
@@ -46,10 +49,10 @@ public class DomainInterceptor implements Interceptor {
                     }
                 }
                 DomainName domainName = invocation.method().getAnnotation(DomainName.class);
-                if(domainName != null){
-                    HttpUrl httpUrl = RetrofitHelper.getInstance().obtainParserDomainUrl(domainName.value(),request.url());
-                    //如果不为空，则切换 BaseUrl
-                    if(httpUrl != null){
+                if (domainName != null) {
+                    HttpUrl httpUrl = RetrofitHelper.getInstance().obtainParserDomainUrl(domainName.value(), request.url());
+                    // 如果不为空，则切换 BaseUrl
+                    if (httpUrl != null) {
                         return request.newBuilder()
                                 .url(httpUrl)
                                 .build();
@@ -58,10 +61,10 @@ public class DomainInterceptor implements Interceptor {
             }
 
             HttpUrl baseUrl = RetrofitHelper.getInstance().getBaseUrl();
-            if(baseUrl != null){
-                HttpUrl httpUrl = RetrofitHelper.getInstance().parseHttpUrl(baseUrl,request.url());
-                //如果不为空，则切换 BaseUrl
-                if(httpUrl != null){
+            if (baseUrl != null) {
+                HttpUrl httpUrl = RetrofitHelper.getInstance().parseHttpUrl(baseUrl, request.url());
+                // 如果不为空，则切换 BaseUrl
+                if (httpUrl != null) {
                     return request.newBuilder()
                             .url(httpUrl)
                             .build();

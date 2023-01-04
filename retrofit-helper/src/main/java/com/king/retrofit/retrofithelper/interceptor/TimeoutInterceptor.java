@@ -1,6 +1,5 @@
 package com.king.retrofit.retrofithelper.interceptor;
 
-
 import com.king.retrofit.retrofithelper.RetrofitHelper;
 import com.king.retrofit.retrofithelper.annotation.Timeout;
 
@@ -12,25 +11,25 @@ import okhttp3.Response;
 import retrofit2.Invocation;
 
 /**
+ * 超时拦截器 - 动态配置HTTP请求超时时长
+ *
  * @author <a href="mailto:jenly1314@gmail.com">Jenly</a>
  */
 public class TimeoutInterceptor implements Interceptor {
 
     @Override
     public Response intercept(Chain chain) throws IOException {
-
-        //如果支持动态配置超时时长
-        if(RetrofitHelper.getInstance().isDynamicTimeout()){
+        // 如果支持动态配置超时时长
+        if (RetrofitHelper.getInstance().isDynamicTimeout()) {
             Request request = chain.request();
             Invocation invocation = request.tag(Invocation.class);
-            if(invocation != null){
+            if (invocation != null) {
                 Timeout timeout = invocation.method().getAnnotation(Timeout.class);
-                if(timeout != null){
-                    return chain.withConnectTimeout(timeout.connectTimeout(),timeout.timeUnit())
-                                .withReadTimeout(timeout.readTimeout(),timeout.timeUnit())
-                                .withWriteTimeout(timeout.writeTimeout(),timeout.timeUnit())
-                                .proceed(request);
-
+                if (timeout != null) {
+                    return chain.withConnectTimeout(timeout.connectTimeout(), timeout.timeUnit())
+                            .withReadTimeout(timeout.readTimeout(), timeout.timeUnit())
+                            .withWriteTimeout(timeout.writeTimeout(), timeout.timeUnit())
+                            .proceed(request);
                 }
             }
         }
