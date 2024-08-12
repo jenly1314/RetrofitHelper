@@ -61,7 +61,7 @@ compileOptions {
 
 ```
 
-Step.2 通过RetrofitUrlManager初始化OkHttpClient，进行初始化配置
+Step.2 通过RetrofitHelper初始化OkHttpClient，进行初始化配置
 ```kotlin
 // 通过RetrofitHelper创建一个支持多个BaseUrl的 OkHttpClient
 // 方式一
