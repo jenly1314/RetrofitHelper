@@ -5,7 +5,6 @@
 [![Download](https://img.shields.io/badge/download-App-blue.svg)](https://raw.githubusercontent.com/jenly1314/RetrofitHelper/master/app/release/app-release.apk)
 [![MavenCentral](https://img.shields.io/maven-central/v/com.github.jenly1314/retrofit-helper)](https://repo1.maven.org/maven2/com/github/jenly1314/retrofit-helper)
 [![JitPack](https://jitpack.io/v/jenly1314/RetrofitHelper.svg)](https://jitpack.io/#jenly1314/RetrofitHelper)
-[![CI](https://travis-ci.org/jenly1314/RetrofitHelper.svg?branch=master)](https://travis-ci.org/jenly1314/RetrofitHelper)
 [![CircleCI](https://circleci.com/gh/jenly1314/RetrofitHelper.svg?style=svg)](https://circleci.com/gh/jenly1314/RetrofitHelper)
 [![API](https://img.shields.io/badge/API-16%2B-blue.svg?style=flat)](https://android-arsenal.com/api?level=16)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/mit-license.php)
@@ -233,23 +232,21 @@ public final class RetrofitHelper{
 RetrofitHelper.getInstance().setBaseUrl(dynamicUrl)
 ```
 
-更多使用详情，请查看[app](app)中的源码使用示例或直接查看[API帮助文档](https://jitpack.io/com/github/jenly1314/RetrofitHelper/latest/javadoc/)
+更多使用详情，请查看[app](app)中的源码使用示例或直接查看[API帮助文档](https://jenly1314.github.io/RetrofitHelper/api/)
 
 ## 相关推荐
 
-#### [BaseUrlManager](https://github.com/jenly1314/BaseUrlManager) BaseUrl管理器，主要打测试包时，一个App可动态切换到不同的开发环境或测试环境。
+- [BaseUrlManager](https://github.com/jenly1314/BaseUrlManager) BaseUrl管理器，主要打测试包时，一个App可动态切换到不同的开发环境或测试环境。
+- [MVVMFrame](https://github.com/jenly1314/MVVMFrame) 一个基于JetPack构建的MVVM快速开发框架。
 
-## 版本记录
+<!-- end -->
+
+## 版本日志
 
 #### v1.1.0：2023-1-4
 *  新增支持请求响应进度监听
 
-#### v1.0.1：2021-4-23
-*  新增支持添加公共请求头
-*  新增 **@BaseUrl** 注解
-
-#### v1.0.0：2020-5-30
-*  RetrofitHelper初始版本
+#### [查看更多版本日志](CHANGELOG.md)
 
 ## 赞赏
 如果你喜欢RetrofitHelper，或感觉RetrofitHelper帮助到了你，可以点右上角“Star”支持一下，你的支持就是我的动力，谢谢 :smiley:

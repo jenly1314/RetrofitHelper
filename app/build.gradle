@@ -1,13 +1,15 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+}
 
 android {
-    compileSdkVersion build_versions.compileSdk
-    buildToolsVersion build_versions.buildTools
+    compileSdk build_versions.compileSdk
+
     defaultConfig {
         applicationId "com.king.retrofit.retrofithelper.app"
-        minSdkVersion build_versions.minSdk
-        targetSdkVersion build_versions.targetSdk
+        minSdk build_versions.minSdk
+        targetSdk build_versions.targetSdk
         versionCode app_version.versionCode
         versionName app_version.versionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -26,15 +28,18 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
         sourceCompatibility JavaVersion.VERSION_1_8
     }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
 
     buildFeatures {
         viewBinding true
     }
+    namespace 'com.king.retrofit.retrofithelper.app'
 
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
     implementation "androidx.appcompat:appcompat:$versions.appcompat"
     implementation "androidx.core:core-ktx:$versions.core_ktx"
