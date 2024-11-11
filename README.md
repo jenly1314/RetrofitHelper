@@ -237,7 +237,7 @@ RetrofitHelper.getInstance().setBaseUrl(dynamicUrl)
 ## 相关推荐
 
 - [BaseUrlManager](https://github.com/jenly1314/BaseUrlManager) BaseUrl管理器，主要打测试包时，一个App可动态切换到不同的开发环境或测试环境。
-- [MVVMFrame](https://github.com/jenly1314/MVVMFrame) 一个基于JetPack构建的MVVM快速开发框架。
+- [MVVMFrame](https://github.com/jenly1314/MVVMFrame) 一个基于Google官方推出的JetPack构建的MVVM快速开发框架。
 
 <!-- end -->
 
