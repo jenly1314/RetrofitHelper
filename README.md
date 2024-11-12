@@ -12,11 +12,11 @@
 RetrofitHelper for Android 是一个为 Retrofit 提供便捷配置多个BaseUrl相关的扩展帮助类。
 
 ## 主要功能介绍
-- [x] 支持配置多个BaseUrl
-- [x] 支持动态改变BaseUrl
-- [x] 支持动态配置超时时长
-- [x] 支持添加公共请求头
-- [x] 支持请求响应进度监听
+- ✅ 支持配置多个BaseUrl
+- ✅ 支持动态改变BaseUrl
+- ✅ 支持动态配置超时时长
+- ✅ 支持添加公共请求头
+- ✅ 支持请求响应进度监听
 
 ## Gif 展示
 ![Image](GIF.gif)
